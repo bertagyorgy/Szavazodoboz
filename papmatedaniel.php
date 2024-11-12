@@ -1,56 +1,65 @@
 <?php
-    // A fájl elérési útja
-    $fajl = "szavazatok.txt";
-    
-    // Ellenőrizd, hogy létezik-e a fájl
-    if (!file_exists($fajl)) {
-        // Ha nem létezik, hozz létre egy alapértelmezett fájlt
-        file_put_contents($fajl, "0||0||0||0");
+
+// A fájl elérési útja
+$fajl = "szavazatok.txt";
+
+// Ellenőrizd, hogy létezik-e a fájl, ha nem, hozz létre egy alapértelmezett fájlt
+if (!file_exists($fajl)) {
+    file_put_contents($fajl, "0||0||0||0");
+}
+
+// Beolvassuk a fájl tartalmát
+$content = file($fajl);
+$array = explode("||", trim($content[0])); // Az adatokat || alapján bontjuk
+
+// A változók inicializálása
+$bab = (int)$array[0];
+$gulyas = (int)$array[1];
+$para = (int)$array[2];
+$tojas = (int)$array[3];
+
+// Ha a felhasználó szavazott
+if (isset($_POST['vote'])) {
+    $vote = (int)$_POST['vote'];
+
+    // A szavazat hozzáadása a megfelelő változóhoz
+    if ($vote == 0) {
+        $bab++;
+    } elseif ($vote == 1) {
+        $gulyas++;
+    } elseif ($vote == 2) {
+        $para++;
+    } elseif ($vote == 3) {
+        $tojas++;
     }
 
-    // Beolvassuk a fájl tartalmát
-    $content = file($fajl);
-    $array = explode("||", trim($content[0])); // Az adatokat || alapján bontjuk
+    // Az új szavazatokat összefűzzük és elmentjük a fájlba
+    $insertvote = $bab . "||" . $gulyas . "||" . $para . "||" . $tojas;
+    file_put_contents($fajl, $insertvote);
 
-    // A változók inicializálása
-    $bab = (int)$array[0];
-    $gulyas = (int)$array[1];
-    $para = (int)$array[2];
-    $tojas = (int)$array[3];
+    // Session beállítása, hogy ne lehessen többször szavazni ugyanazzal a böngészővel
+    $_SESSION['ittjártam'] = true;
+}
 
-    // Ha van szavazat, növeljük a megfelelő értéket
-    if (isset($_POST['vote'])) {
-        $vote = (int)$_POST['vote'];
-        if ($vote == 0) {
-            $bab++;
-        } elseif ($vote == 1) {
-            $gulyas++;
-        } elseif ($vote == 2) {
-            $para++;
-        } elseif ($vote == 3) {
-            $tojas++;
-        }
+// Ha a felhasználó már szavazott, jelenítse meg az eredményeket
+if (isset($_SESSION['ittjártam'])) {
+    echo "<h3>Szavazatok eredményei:</h3>";
+    echo "Bableves: " . $bab . " szavazat<br>";
+    echo "Gulyásleves: " . $gulyas . " szavazat<br>";
+    echo "Paradicsomleves: " . $para . " szavazat<br>";
+    echo "Tojásleves: " . $tojas . " szavazat<br>";
+} else {
+    // Ha a felhasználó még nem szavazott, akkor jelenítse meg a szavazólapot
+    echo '
+    <form action="" method="post" class="szavazodoboz">
+        <h3>Mit választasz?</h3>
 
-        // Az új szavazatokat összefűzzük és elmentjük
-        $insertvote = $bab . "||" . $gulyas . "||" . $para . "||" . $tojas;
+        <input type="radio" name="vote" value="0">Bableves <br>
+        <input type="radio" name="vote" value="1">Gulyásleves <br>
+        <input type="radio" name="vote" value="2">Paradicsomleves <br>
+        <input type="radio" name="vote" value="3">Tojásleves <br>
 
-        // A fájlba írás
-        file_put_contents($fajl, $insertvote);
-
-        if(!isset($_SESSION['ittjártam']))
-        {
-            print'<form action="" method="post" class="szavazodoboz">
-            <h3>Mit választasz?</h3>
-        
-            <input type="radio" name="vote" value="0">Bableves <br>
-            <input type="radio" name="vote" value="1">Gulyásleves <br>
-            <input type="radio" name="vote" value="2">Paradicsomleves <br>
-            <input type="radio" name="vote" value="3">Tojásleves <br>
-        
-            <input type="submit" value="szavazok" style="margin: 24px 0 0 24px;">
-            </form>';
-        } else {
-            
-        }
-    }
+        <input type="submit" value="szavazok" style="margin: 24px 0 0 24px;">
+    </form>';
+}
 ?>
