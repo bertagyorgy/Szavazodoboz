@@ -37,6 +37,16 @@
         background-color: #000;
         color: #fff;
     }
+    form.szavazodoboz{
+        height: 200px;
+        width: 600px;
+        margin-top: 100px;
+        left: 50%;
+        padding: 20px;
+        border: 1px solid #000;
+        background-color: lightgreen;
+        border-radius: 7px;
+    }
 </style>
 <body>
     <div id='menu'>
@@ -45,7 +55,8 @@
         <a href='./?p=termekek'>Termékek</a> |
         <a href='./?p=help'>Segítség</a>     |
         <a href='./?p=gyik'>GY.I.K</a>       |
-        <a href='./?p=rolunk'>Rólunk</a>
+        <a href='./?p=rolunk'>Rólunk</a>     |
+        <a href='./?p=szavazas'>Szavazás</a>
         ]
     </div>
     <div id='tartalom'>
@@ -59,6 +70,7 @@
     if( $p=="help"    ) print "<h2> Terméktámogatás</h2>"            ; else
     if( $p=="gyik"    ) include("gyik.php")                          ; else
     if( $p=="rolunk"  ) include("rolunk.php")                        ; else
+    if( $p=="szavazas") include("szavazas.php")                      ; else
                         include("404.php")                           ;
 
 ?>
