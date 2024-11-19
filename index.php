@@ -1,115 +1,80 @@
 <?php
-    session_start();
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menü</title>
-</head>
-<style>
-    body{
-        margin: 0;
-        font-family: Arial;
-        font-size: 20px;
-    }
-    div#menu{
-        background-color: lightgrey;
-        text-align: center;
-    }
-    div#menu a{
-        width: 120px;
-        display: inline-block;
-        text-decoration: none;
-        color: #666;
-        text-align: center;
-    }
-    div#menu a:hover{
-        color: #000;
-        background-color: #ddd;
-    }
-    div#tartalom{
-        margin-left: 200px;
-        min-height: 480px;
-    }
-    div#lablec{
-        background-color: #000;
-        color: #fff;
-    }
-    form.szavazodoboz{
-        height: 200px;
-        width: 600px;
-        margin-top: 100px;
-        left: 50%;
-        padding: 20px;
-        border: 1px solid #000;
-        background-color: lightgreen;
-        border-radius: 7px;
-    }
-</style>
-<body>
-    <div id='menu'>
-        [
-        <a href='./'>Kezdőlap</a>            |
-        <a href='./?p=termekek'>Termékek</a> |
-        <a href='./?p=help'>Segítség</a>     |
-        <a href='./?p=gyik'>GY.I.K</a>       |
-        <a href='./?p=rolunk'>Rólunk</a>     |
-        <a href='./?p=szavazas'>Szavazás</a>
-        ]
-    </div>
-    <div id='tartalom'>
 
-<?php
-    if( isset($_GET['p']) ) $p = $_GET['p'];
-    else                   $p = ""         ;
+// A fájl elérési útja
+$fajl = "szavazatok.txt";
 
-    if( $p==""        ) print "<h2> Akciók </h2>"                    ; else
-    if( $p=="termekek") print "<h2> Termékek, szolgáltatások </h2>"  ; else
-    if( $p=="help"    ) print "<h2> Terméktámogatás</h2>"            ; else
-    if( $p=="gyik"    ) include("gyik.php")                          ; else
-    if( $p=="rolunk"  ) include("rolunk.php")                        ; else
-    if( $p=="szavazas") include("szavazas.php")                      ; else
-                        include("404.php")                           ;
 
-?>
+// Ellenőrizd, hogy létezik-e a fájl, ha nem, hozz létre egy alapértelmezett fájlt
+if (!file_exists($fajl)) {
+    file_put_contents($fajl, "0||0||0||0");
+}
 
-    </div>
-    <div id="lablec">
-        &copy; enoldalam.hu - 2024.
-<?php
-    $fajlnev = "szamlalo.txt";
-    if(!file_exists($fajlnev))
-    {
-        $fp = fopen($fajlnev, "w");
-        fwrite($fp, "0");
-        fclose($fp);
+// Beolvassuk a fájl tartalmát
+$content = file($fajl);
+$array = explode("||", trim($content[0])); // Az adatokat || alapján bontjuk
+
+// A változók inicializálása
+$bab = (int)$array[0];
+$gulyas = (int)$array[1];
+$para = (int)$array[2];
+$tojas = (int)$array[3];
+
+// Ha a felhasználó szavazott
+if (isset($_POST['vote'])) {
+    $vote = (int)$_POST['vote'];
+
+    // A szavazat hozzáadása a megfelelő változóhoz
+    if (!$_SESSION['ittjártam']){
+        if ($vote == 0) {
+            $bab++;
+        } elseif ($vote == 1) {
+            $gulyas++;
+        } elseif ($vote == 2) {
+            $para++;
+        } elseif ($vote == 3) {
+            $tojas++;
+        }
     }
-    $fp = fopen($fajlnev, "r");
-    $n = fread($fp, filesize($fajlnev));
-    fclose($fp);
+
+
+    // Az új szavazatokat összefűzzük és elmentjük a fájlba
+    $insertvote = $bab . "||" . $gulyas . "||" . $para . "||" . $tojas;
+    file_put_contents($fajl, $insertvote);
+
+    // Session beállítása, hogy ne lehessen többször szavazni ugyanazzal a böngészővel
+    $_SESSION['ittjártam'] = true;
+}
+
+$tablazat = <<<EOT
+<table border='1'>
+    <tr>
+        <td>bableves</td>
+        <td>gulyasleves</td>
+        <td>paradicsomleves</td>
+        <td>tojasleves</td>
+    </tr>
     
-    if(!isset($_SESSION['ittjártam']))
-    {
-        $n++;
-        $_SESSION['ittjártam'] = 1;
-        $fp = fopen($fajlnev, "w");
-        fwrite($fp, $n);
-        fclose($fp);
-    }
-    print" - Te vagy a(z) $n. látogató"
+EOT;
+// Ha a felhasználó már szavazott, jelenítse meg az eredményeket
+$ossz = $bab+$gulyas+$para+$tojas;
+if (isset($_SESSION['ittjártam'])) {
+    echo "<h3>Szavazatok eredményei:</h3>";
+    echo "Bableves:        " . $bab .    " db " . ($bab/$ossz*100   ). ' %'."<br>";
+    echo "Gulyásleves:     " . $gulyas . " db " . ($gulyas/$ossz*100). ' %' ."<br>";
+    echo "Paradicsomleves: " . $para .   " db " . ($para/$ossz*100  ). ' %' ."<br>";
+    echo "Tojásleves:      " . $tojas .  " db " . ($tojas/$ossz*100 ). ' %' ."<br>";
+} else {
+    // Ha a felhasználó még nem szavazott, akkor jelenítse meg a szavazólapot
+    echo '
+    <form action="" method="post" class="szavazodoboz">
+        <h3>Mit választasz?</h3>
+
+        <input type="radio" name="vote" value="0">Bableves <br>
+        <input type="radio" name="vote" value="1">Gulyásleves <br>
+        <input type="radio" name="vote" value="2">Paradicsomleves <br>
+        <input type="radio" name="vote" value="3">Tojásleves <br>
+
+        <input type="submit" value="szavazok" style="margin: 24px 0 0 24px;">
+    </form>';
+}
 ?>
-        <div style='float:right;'>
-<?php
-    
-    $honapok = array( "", "Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December");
-    $napok = array( "", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap");
-    //include("nevnapok.php");
-    print date("Y. ") . $honapok[date("n")]  . date(" d. ") . $napok[date("N")];
-?>
-        </div>
-    </div>
-    
-</body>
-</html>
