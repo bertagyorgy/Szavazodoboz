@@ -3,6 +3,7 @@
 // A fájl elérési útja
 $fajl = "szavazatok.txt";
 
+
 // Ellenőrizd, hogy létezik-e a fájl, ha nem, hozz létre egy alapértelmezett fájlt
 if (!file_exists($fajl)) {
     file_put_contents($fajl, "0||0||0||0");
@@ -19,19 +20,23 @@ $para = (int)$array[2];
 $tojas = (int)$array[3];
 
 // Ha a felhasználó szavazott
+
 if (isset($_POST['vote'])) {
     $vote = (int)$_POST['vote'];
 
     // A szavazat hozzáadása a megfelelő változóhoz
-    if ($vote == 0) {
-        $bab++;
-    } elseif ($vote == 1) {
-        $gulyas++;
-    } elseif ($vote == 2) {
-        $para++;
-    } elseif ($vote == 3) {
-        $tojas++;
+    if (!$_SESSION['ittjártam']){
+        if ($vote == 0) {
+            $bab++;
+        } elseif ($vote == 1) {
+            $gulyas++;
+        } elseif ($vote == 2) {
+            $para++;
+        } elseif ($vote == 3) {
+            $tojas++;
+        }
     }
+
 
     // Az új szavazatokat összefűzzük és elmentjük a fájlba
     $insertvote = $bab . "||" . $gulyas . "||" . $para . "||" . $tojas;
@@ -42,12 +47,13 @@ if (isset($_POST['vote'])) {
 }
 
 // Ha a felhasználó már szavazott, jelenítse meg az eredményeket
+$ossz = $bab+$gulyas+$para+$tojas;
 if (isset($_SESSION['ittjártam'])) {
     echo "<h3>Szavazatok eredményei:</h3>";
-    echo "Bableves: " . $bab . " szavazat<br>";
-    echo "Gulyásleves: " . $gulyas . " szavazat<br>";
-    echo "Paradicsomleves: " . $para . " szavazat<br>";
-    echo "Tojásleves: " . $tojas . " szavazat<br>";
+    echo "Bableves:        " . $bab .    " db " . round($bab/$ossz*100,1   ). "% </span><br>";
+    echo "Gulyásleves:     " . $gulyas . " db " . round($gulyas/$ossz*100,1). "% </span><br>";
+    echo "Paradicsomleves: " . $para .   " db " . round($para/$ossz*100,1  ). "% </span><br>";
+    echo "Tojásleves:      " . $tojas .  " db " . round($tojas/$ossz*100,1 ). "% </span><br>";
 } else {
     // Ha a felhasználó még nem szavazott, akkor jelenítse meg a szavazólapot
     echo '
