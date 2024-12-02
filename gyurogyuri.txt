@@ -1,0 +1,12 @@
+Kritika:
+Kilépés gomb úgy elvan dugva hogy még egy hangyát is
+könnyebb észrevenni. Nagyon gagyi.
+Információ gomb is elvan dugva, kevés információ
+
+Beállítások gombnak nincs funkciója
+Hogyan játsz-ból hiányzik a pontos játékszabály
+Mi a fene az a fordított mód?
+
+
+Működésbeli hiba: 
+	- Néha amikor gép ellen játszunk. És teszünk, akkor úgy érzékeli, hogy a gép tesz, és kört rak le.
