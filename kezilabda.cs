@@ -32,6 +32,7 @@ namespace _20241212
         static List<Kezieb> jatekos = new List<Kezieb>();
         static List<int> eletkorok = new List<int>();
         static List<int> magassagok = new List<int>();
+        static double atlag;
         static void Main(string[] args)
         {
             f2();
@@ -48,6 +49,7 @@ namespace _20241212
             f13();
             f14();
             f15();
+            f16();
             Console.ReadLine();
         }
         static void f2()
@@ -180,8 +182,8 @@ namespace _20241212
             foreach (var item in jatekos)
             {
                 magassagok.Add(item.cm);
-            }           
-            double atlag = magassagok.Sum() / magassagok.Count;
+            }
+            atlag = magassagok.Sum() / magassagok.Count;
             Console.WriteLine($"11. feladat: A csapat átlagmagassága {Math.Round(atlag)} cm.");
         }
         static void f12()
@@ -237,5 +239,19 @@ namespace _20241212
                 Console.WriteLine("15. feladat: Nincs olyan játékos aki 200 cm magas.");
             }
         }
+        static void f16()
+        {
+            string file = "magasak.txt";
+            using (FileStream fs = File.Create(file)) { }
+            foreach (var item in jatekos)
+            {
+                if (item.cm > atlag)
+                {
+                    string sor = $"{item.nev} {item.cm}";
+                    File.AppendAllText(file, sor + Environment.NewLine);
+                }
+            }
+        }
+
     }
 }
