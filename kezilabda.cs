@@ -30,6 +30,8 @@ namespace _20241212
     class Program
     {
         static List<Kezieb> jatekos = new List<Kezieb>();
+        static List<int> eletkorok = new List<int>();
+        static List<int> magassagok = new List<int>();
         static void Main(string[] args)
         {
             f2();
@@ -39,6 +41,13 @@ namespace _20241212
             f6();
             f7();
             f8();
+            f9();
+            f10();
+            f11();
+            f12();
+            f13();
+            f14();
+            f15();
             Console.ReadLine();
         }
         static void f2()
@@ -48,7 +57,7 @@ namespace _20241212
             {
                 jatekos.Add(new Kezieb(item));
             }
-            Console.WriteLine($"A magyar csapatban {jatekos.Count} mezőnyjátékos szerepelt.");
+            Console.WriteLine($"2. feladat: A magyar csapatban {jatekos.Count} mezőnyjátékos szerepelt.");
         }
         static void f3()
         {
@@ -76,7 +85,7 @@ namespace _20241212
                 if (!csapatok.Contains(item.csapat))
                 {
                     csapatok.Add(item.csapat);
-                }              
+                }
             }
             csapatok.Sort();
             foreach (var item in csapatok)
@@ -90,7 +99,7 @@ namespace _20241212
             Console.WriteLine("5. feladat: Öt gólnál többet dobtak:");
             foreach (var item in jatekos)
             {
-                if(item.loves > 5)
+                if (item.loves > 5)
                 {
                     otgolosok.Add(item.nev);
                 }
@@ -106,7 +115,7 @@ namespace _20241212
             int osszgol = 0;
             int hetmeteres_szamolo = 0;
             foreach (var item in jatekos)
-            {               
+            {
                 osszgol += item.golok;
                 hetmeteres_szamolo += item.hetmeteres;
             }
@@ -138,21 +147,95 @@ namespace _20241212
         }
         static void f9()
         {
-            List<int> eletkorok = new List<int>();
+            string fiataljatekos = "";
             foreach (var item in jatekos)
             {
                 eletkorok.Add(int.Parse(item.szulido.Split('.')[0]));
             }
             eletkorok.Sort();
-            int legfiatalabb = eletkorok.Min();
+            int legfiatalabb = eletkorok.Last();
             foreach (var item in jatekos)
             {
-                if (item.szulido.Contains(legfiatalabb))
+                if (Convert.ToString(legfiatalabb) == item.szulido.Split('.')[0])
                 {
-
+                    fiataljatekos = item.nev;
                 }
             }
-            Console.WriteLine($"9. feladat: A legfiatalabb játékos {}.");
+            Console.WriteLine($"9. feladat: A legfiatalabb játékos {fiataljatekos}.");
+        }
+        static void f10()
+        {
+            int i = 0;
+            foreach (var item in eletkorok)
+            {
+                if (item == 1999)
+                {
+                    i++;
+                }
+            }
+            Console.WriteLine($"10. feladat: 1999-ben {i} játékos született.");
+        }
+        static void f11()
+        {            
+            foreach (var item in jatekos)
+            {
+                magassagok.Add(item.cm);
+            }           
+            double atlag = magassagok.Sum() / magassagok.Count;
+            Console.WriteLine($"11. feladat: A csapat átlagmagassága {Math.Round(atlag)} cm.");
+        }
+        static void f12()
+        {
+            List<int> evek = new List<int>();
+            foreach (var item in eletkorok)
+            {
+                evek.Add(2024 - item);
+            }
+            double atlagev = evek.Sum() / evek.Count;
+            Console.WriteLine($"12. feladat: A csapat átlagéletkora {atlagev} év.");
+        }
+        static void f13()
+        {
+            int i = 0;
+            foreach (var item in jatekos)
+            {
+                if (item.csapat == "Balatonfüredi KSE")
+                {
+                    i++;
+                }
+            }
+            Console.WriteLine($"13. feladat: A Balatonfüredi KSE {i} játékost adott a válogatottnak.");
+        }
+        static void f14()
+        {
+            string lekaicsapat = "";
+            foreach (var item in jatekos)
+            {
+                if (item.nev == "Lékai Máté")
+                {
+                    lekaicsapat = item.csapat;
+                }
+            }
+            Console.WriteLine($"14. feladat: Lékai Máté a {lekaicsapat}-ben játszik.");
+        }
+        static void f15()
+        {
+            bool ketszaz = false;
+            foreach (var item in magassagok)
+            {
+                if (item == 200)
+                {
+                    ketszaz = true;
+                }
+            }
+            if (ketszaz == true)
+            {
+                Console.WriteLine("15. feladat: Van olyan játékos aki 200 cm magas.");
+            }
+            else
+            {
+                Console.WriteLine("15. feladat: Nincs olyan játékos aki 200 cm magas.");
+            }
         }
     }
 }
