@@ -1,0 +1,18 @@
+﻿Lékai Máté;17;25;3;3;2;irányító;1988.06.16.;190;Telekom Veszprém
+Sipos Adrián;0;1;0;0;5;beálló;1990.03.08.;198;Telekom Veszprém
+Rodríguez Alvarez Pedro;9;11;0;0;0;jobbszélső;1990.08.22.;197;Balatonfüredi KSE
+Ancsin Gábor;3;6;0;0;0;jobbátlövő;1990.11.27.;202;Grundfos Tatabánya
+Topic Petar;6;7;0;0;2;beálló;1991.12.30.;201;Balatonfüredi KSE
+Bodó Richárd;10;18;0;0;1;balátlövő;1993.03.13.;203;MOL-Pick Szeged
+Bóka Bendegúz;6;7;0;0;0;balszélső;1993.10.02.;193;Balatonfüredi KSE
+Bujdosó Bendegúz;0;0;0;0;0;jobbszélső;1994.12.10.;180;Ferencvárosi TC
+Bánhidi Bence;9;11;0;0;1;beálló;1995.02.09.;206;MOL-Pick Szeged
+Nagy Bence;0;0;0;0;0;balátlövő;1995.07.05.;195;Ferencvárosi TC
+Ligetvári Patrik;0;0;0;0;2;balátlövő;1996.02.13.;201;Telekom Veszprém
+Győri Mátyás;0;0;0;0;0;irányító;1997.02.02.;194;Grundfos Tatabánya
+Hanusz Egon;2;2;0;0;0;irányító;1997.09.5.;177;TV Bittenfeld
+Szita Zoltán;9;17;0;0;2;balátlövő;1998.02.10.;196;Orlen Wisła Płock
+Sunajko Stefan;0;0;0;0;0;balszélső;1998.04.10.;194;Grundfos Tatabánya
+Rosta Miklós;1;1;0;0;0;beálló;1999.02.04.;203;MOL-Pick Szeged
+Máthé Dominik;17;34;7;11;0;jobbátlövő;1999.04.01.;201;Elverum Handball
+Ilic Zoran;0;0;0;0;0;jobbátlövő;2002.01.02.;197;Telekom Veszprém
